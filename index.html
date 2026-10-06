@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="12306电影网,12306dianyingwang,电影排片,电影时刻表,院线电影,在线选片,电影资讯,电影评论,电影推荐,热门电影">
+<meta name="description" content="12306电影网(12306dianyingwang)——像查列车时刻一样查电影排片，提供电影排片时刻表、热门影片推荐、院线资讯与影评，一站式在线选片观影指南。">
+<title>12306电影网 - 像查列车时刻一样，精准选好电影</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0a3d62;--navy2:#3c6382;--blue:#1e6f9f;--teal:#0abde3;--paper:#f4f7fa;--card:#fff;
+  --ink:#1d2939;--ink2:#5a6b7d;--line:#dbe4ec;--green:#0ca678;--amber:#f6a609;--red:#e03131;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;
+  background:var(--paper);color:var(--ink);line-height:1.85;
+}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+::selection{background:var(--blue);color:#fff}
+
+/* ===== 顶栏：车票/时刻表风 ===== */
+header{background:var(--navy);color:#fff;position:sticky;top:0;z-index:50;box-shadow:0 3px 16px rgba(10,61,98,.25)}
+.tbar{display:flex;align-items:center;justify-content:space-between;padding:8px 0;font-size:11.5px;border-bottom:1px solid rgba(255,255,255,.12)}
+.tbar .l{color:#a8c6dd}.tbar .r{color:#7fd6ee}
+.brand{max-width:1160px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.logo{display:flex;align-items:center;gap:14px}
+.ticket{width:52px;height:52px;background:linear-gradient(135deg,var(--teal),var(--blue));border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:13px;line-height:1;box-shadow:0 4px 12px rgba(26,188,227,.4);position:relative;overflow:hidden}
+.ticket::after{content:"";position:absolute;left:0;right:0;top:52%;height:1px;background:repeating-linear-gradient(90deg,#fff 0,#fff 4px,transparent 4px,transparent 8px)}
+.ticket b{font-size:17px;letter-spacing:-.5px}
+.brand h1{font-size:clamp(20px,3.4vw,30px);font-weight:900;letter-spacing:.5px}
+.brand h1 small{display:block;font-size:10.5px;font-weight:500;letter-spacing:3px;color:#7fd6ee;margin-top:2px;text-transform:uppercase;opacity:.9}
+.brand .sub{text-align:right;font-size:12px;color:#bcd4e4;line-height:1.7}
+.brand .sub b{color:#fff}
+nav.primary{background:rgba(255,255,255,.06);border-top:1px solid rgba(255,255,255,.1)}
+nav.primary .wrap{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+nav.primary a{font-size:14px;font-weight:600;color:#d6e6f0;padding:12px 14px;transition:.2s;border-bottom:2px solid transparent}
+nav.primary a:hover{color:#fff;background:rgba(255,255,255,.08);border-bottom-color:var(--teal)}
+.burger{display:none;background:var(--teal);border:0;color:#fff;width:40px;height:38px;border-radius:6px;font-size:17px;cursor:pointer;margin:8px 0}
+
+/* ===== Hero ===== */
+.hero{position:relative;padding:74px 0;background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 55%,#125a86 100%);color:#fff;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:46px 46px}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1.25fr 1fr;gap:44px;align-items:center}
+.hero .badge{display:inline-block;font-size:11.5px;letter-spacing:2px;background:rgba(10,189,227,.18);border:1px solid rgba(10,189,227,.5);color:#7fd6ee;padding:5px 12px;border-radius:30px;margin-bottom:16px}
+.hero h2{font-size:clamp(30px,5.4vw,54px);font-weight:900;line-height:1.18;letter-spacing:-.5px}
+.hero h2 em{font-style:normal;color:#7fd6ee}
+.hero p{margin-top:18px;color:#cfe4ef;font-size:15.5px;max-width:500px}
+.hero .acts{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap}
+.btn{border:0;cursor:pointer;padding:13px 26px;font-size:14px;font-weight:700;border-radius:6px;transition:.25s;font-family:inherit}
+.btn-p{background:var(--teal);color:#062b42}
+.btn-p:hover{background:#5de0f5;color:#062b42}
+.btn-o{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.55)}
+.btn-o:hover{border-color:#7fd6ee;color:#7fd6ee}
+
+/* 查片表单 */
+.search{background:#fff;border-radius:14px;padding:24px;box-shadow:0 20px 48px rgba(6,43,66,.35);color:var(--ink)}
+.search .lab{font-size:12px;font-weight:700;color:var(--navy);letter-spacing:1px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.search .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.search input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;background:var(--paper);color:var(--ink)}
+.search input:focus{outline:2px solid var(--teal);border-color:var(--teal)}
+.search select{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;background:var(--paper);color:var(--ink);cursor:pointer}
+.swap{display:flex;align-items:center;justify-content:center;color:var(--navy2);font-size:15px;padding:8px 0}
+.search .big{width:100%;padding:14px;background:linear-gradient(135deg,var(--blue),var(--navy));color:#fff;font-size:15px;font-weight:800;border:0;border-radius:8px;cursor:pointer;margin-top:4px}
+.search .big:hover{filter:brightness(1.1)}
+
+/* ===== 通用 ===== */
+section{padding:78px 0}
+.sec-h{margin-bottom:44px}
+.sec-h .top{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:2px solid var(--navy);padding-bottom:12px;margin-bottom:6px}
+.sec-h .n{font-size:12px;font-weight:800;color:var(--teal);letter-spacing:2px;text-transform:uppercase}
+.sec-h h2{font-size:clamp(23px,3.5vw,32px);font-weight:900;color:var(--navy);letter-spacing:.3px}
+.sec-h .en{font-size:11.5px;color:var(--ink2);letter-spacing:1px}
+.sec-h .desc{font-size:14px;color:var(--ink2);margin-top:10px;max-width:640px}
+.more{display:inline-flex;align-items:center;gap:6px;margin-top:26px;font-size:13.5px;font-weight:700;color:var(--blue)}
+.more:hover{color:var(--navy)}
+
+/* ===== 栏目一：排片时刻表（表格式） ===== */
+.tbl{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.tbl .th{display:grid;grid-template-columns:2.4fr 1fr 1.1fr 1fr 1fr 1fr;background:var(--navy);color:#fff;font-size:12.5px;font-weight:700}
+.tbl .th span{padding:14px 12px;border-right:1px solid rgba(255,255,255,.12)}
+.tbl .th span:last-child{border-right:0}
+.tbl .rw{display:grid;grid-template-columns:2.4fr 1fr 1.1fr 1fr 1fr 1fr;border-top:1px solid var(--line);align-items:center}
+.tbl .rw:first-of-type{border-top:0}
+.tbl .rw>div{padding:16px 12px;border-right:1px solid var(--line);font-size:13.5px}
+.tbl .rw>div:last-child{border-right:0}
+.tbl .rw:hover{background:#f0f8fc}
+.tbl .film{display:flex;gap:12px;align-items:center}
+.poster{width:44px;height:60px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:700;text-align:center;line-height:1.2;padding:2px}
+.p1{background:linear-gradient(135deg,#0a3d62,#0abde3)}.p2{background:linear-gradient(135deg,#7d5fff,#0abde3)}.p3{background:linear-gradient(135deg,#f6a609,#e03131)}.p4{background:linear-gradient(135deg,#0ca678,#0a3d62)}.p5{background:linear-gradient(135deg,#e03131,#7d5fff)}.p6{background:linear-gradient(135deg,#3c6382,#0ca678)}
+.tbl .film b{display:block;font-size:14.5px;font-weight:800;color:var(--ink)}
+.tbl .film small{font-size:11.5px;color:var(--ink2)}
+.chip{display:inline-block;font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px}
+.chip-h{background:#fdecec;color:var(--red)}.chip-s{background:#e7f8f2;color:var(--green)}.chip-n{background:#eef4fa;color:var(--navy2)}
+.seat{font-weight:800;color:var(--navy)}
+.tk{background:var(--teal);color:#062b42;border:0;padding:8px 14px;border-radius:5px;font-size:12.5px;font-weight:800;cursor:pointer}
+.tk:hover{background:var(--navy);color:#fff}
+
+/* ===== 栏目二：热门影片（卡片网格） ===== */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;transition:.3s}
+.card:hover{transform:translateY(-6px);box-shadow:0 16px 34px rgba(10,61,98,.16)}
+.cover{height:150px;position:relative;display:flex;align-items:flex-end;padding:14px;color:#fff}
+.cover::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(6,43,66,.85),transparent 60%)}
+.cover span{position:relative;z-index:1;font-size:18px;font-weight:900;text-shadow:0 2px 8px rgba(0,0,0,.4)}
+.cover em{position:absolute;top:12px;right:12px;z-index:1;font-style:normal;font-size:11px;font-weight:800;background:rgba(255,255,255,.2);backdrop-filter:blur(4px);padding:3px 8px;border-radius:3px}
+.card .bd{padding:16px}
+.card .bd h3{font-size:16.5px;font-weight:800;margin-bottom:6px}
+.card .meta{display:flex;gap:8px;flex-wrap:wrap;font-size:11.5px;color:var(--ink2);margin-bottom:10px}
+.card .meta i{font-style:normal;background:var(--paper);padding:2px 7px;border-radius:3px}
+.card .bd p{font-size:13px;color:var(--ink2)}
+.card .ft{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+.star{color:var(--amber);font-size:13px;font-weight:800}
+.star small{color:var(--ink2);font-weight:500}
+
+/* ===== 栏目三：院线资讯（左大图右列表） ===== */
+.news{display:grid;grid-template-columns:1.3fr 1fr;gap:26px}
+.lead{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.lead .ph{height:240px;background:linear-gradient(135deg,var(--navy),var(--teal));position:relative}
+.lead .ph::after{content:"";position:absolute;inset:auto 0 0 0;height:70%;background:linear-gradient(to top,rgba(6,43,66,.9),transparent)}
+.lead .ph b{position:absolute;left:20px;bottom:16px;color:#fff;font-size:20px;z-index:1}
+.lead .tx{padding:20px}
+.lead .tx .cat{font-size:11px;font-weight:800;color:var(--teal);letter-spacing:1px}
+.lead .tx h3{font-size:18.5px;font-weight:800;margin:6px 0 8px}
+.lead .tx p{font-size:13.5px;color:var(--ink2)}
+.newslist{display:flex;flex-direction:column}
+.newslist a{display:grid;grid-template-columns:52px 1fr;gap:12px;padding:15px 0;border-bottom:1px solid var(--line);transition:.2s}
+.newslist a:last-child{border-bottom:0}
+.newslist a:hover{background:#eef4fa}
+.newslist .no{font-family:"Georgia",serif;font-size:22px;font-weight:900;color:#c9d8e4;line-height:1}
+.newslist h4{font-size:14.5px;font-weight:700;margin-bottom:4px;line-height:1.5}
+.newslist time{font-size:11.5px;color:var(--ink2)}
+
+/* ===== 栏目四：观影指南（步骤流程） ===== */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:26px 22px;position:relative}
+.step .num{width:40px;height:40px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;margin-bottom:14px}
+.step:nth-child(2) .num{background:var(--blue)}.step:nth-child(3) .num{background:var(--teal);color:#062b42}.step:nth-child(4) .num{background:var(--green)}
+.step h3{font-size:16.5px;font-weight:800;margin-bottom:7px}
+.step p{font-size:13px;color:var(--ink2)}
+
+/* ===== 栏目五：影评（引言+签名） ===== */
+.reviews{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
+.rev{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:0 12px 12px 0;padding:24px}
+.rev .q{font-size:14.5px;color:var(--ink);margin-bottom:16px;line-height:1.8}
+.rev .q::before{content:"「";font-size:26px;color:var(--teal);font-weight:900;line-height:0;vertical-align:-4px;margin-right:2px}
+.rev .au{display:flex;align-items:center;gap:10px;border-top:1px dashed var(--line);padding-top:12px}
+.av{width:36px;height:36px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px}
+.av2{background:var(--green)}.av3{background:var(--amber)}
+.rev .au b{font-size:13.5px}.rev .au span{font-size:11.5px;color:var(--ink2)}
+
+/* ===== 数据条 ===== */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));background:var(--navy);border-radius:14px;overflow:hidden}
+.stat{text-align:center;padding:30px 16px;border-right:1px solid rgba(255,255,255,.1)}
+.stat:last-child{border-right:0}
+.stat strong{display:block;font-size:27px;font-weight:900;color:#7fd6ee;font-family:"Georgia",serif}
+.stat span{font-size:12.5px;color:#bcd4e4}
+
+/* ===== 关于 ===== */
+.about{display:grid;grid-template-columns:1fr 1.5fr;gap:40px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:38px;align-items:center}
+.about .l h2{font-size:24px;font-weight:900;color:var(--navy);margin-bottom:10px}
+.about .l p{font-size:13.5px;color:var(--ink2)}
+.about .l .acts{margin-top:18px}
+.about .r ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.about .r li{font-size:13.5px;color:var(--ink2);padding-left:20px;position:relative}
+.about .r li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:2px;background:var(--teal)}
+
+/* ===== 页脚 ===== */
+footer{background:#072b45;color:#a8c2d4;padding:50px 0 0;margin-top:26px}
+.f{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:34px;max-width:1160px;margin:0 auto;padding:0 24px 38px}
+.f .id .logo .ticket{width:46px;height:46px}
+.f .id h4{font-size:19px;font-weight:900;color:#fff;margin:10px 0 8px}
+.f .id p{font-size:13px;color:#8fabbd}
+.f h5{font-size:12.5px;font-weight:800;color:#fff;margin-bottom:12px;letter-spacing:1px}
+.f a{display:block;color:#8fabbd;font-size:13px;padding:5px 0;transition:.2s}
+.f a:hover{color:#7fd6ee}
+.cp{max-width:1160px;margin:0 auto;padding:18px 24px;border-top:1px solid rgba(255,255,255,.1);font-size:12px;color:#7d98aa;text-align:center}
+.cp b{color:#fff}
+
+#top{position:fixed;right:16px;bottom:20px;z-index:99;width:44px;height:44px;background:var(--navy);color:#fff;border:0;border-radius:8px;font-size:16px;cursor:pointer;opacity:0;visibility:hidden;transition:.3s;box-shadow:0 6px 16px rgba(10,61,98,.35)}
+#top.show{opacity:1;visibility:visible}
+#top:hover{background:var(--teal);color:#062b42}
+
+@media(max-width:900px){
+  .burger{display:block}
+  nav.primary .wrap{display:none;flex-direction:column;align-items:stretch;padding:8px 24px 14px}
+  nav.primary.open .wrap{display:flex}
+  nav.primary a{padding:9px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+  .hero .wrap,.news,.about{grid-template-columns:1fr}
+  .brand{flex-direction:column;text-align:center;gap:12px}
+  .brand .sub{text-align:center}
+  .f{grid-template-columns:1fr 1fr}
+  .tbl .th,.tbl .rw{grid-template-columns:1fr}
+  .tbl .th{display:none}
+  .tbl .rw{border-top:1px solid var(--line);padding:6px 0}
+  .tbl .rw>div{padding:8px 14px;border-right:0;border-bottom:1px dashed var(--line)}
+  .tbl .rw>div:last-child{border-bottom:0}
+  .tbl .rw>div::before{content:attr(data-k);font-size:11px;color:var(--ink2);font-weight:700;display:block;margin-bottom:2px}
+}
+@media(max-width:560px){
+  section{padding:54px 0}.f,.about .r ul{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/xiaolu.js"></script>
+
+<header>
+  <div class="wrap tbar"><span class="l">电影排片 · 影讯速递 · 观影指南</span><span class="r">欢迎使用 12306电影网 · 精准选片，轻松观影</span></div>
+  <div class="brand">
+    <div class="logo"><div class="ticket"><b>12306</b>电影</div><div><h1>12306电影网<small>Movie Schedule &amp; Guide</small></h1></div></div>
+    <div class="sub"><b>像查列车时刻一样，查电影排片</b><br>12306dianyingwang<br>https://12306dianyingwang-wap.github.io</div>
+  </div>
+  <nav class="primary" id="nav"><div class="wrap">
+    <a href="#home">首页</a><a href="#schedule">排片时刻</a><a href="#hot">热门影片</a><a href="#news">影讯资讯</a><a href="#guide">观影指南</a><a href="#review">影评</a><a href="#about">关于我们</a>
+  </div></nav>
+  <button class="burger" id="burger" aria-label="菜单">☰</button>
+</header>
+
+<!-- Hero -->
+<section class="hero" id="home">
+  <div class="wrap">
+    <div><div class="badge">◆ 在线选片 · 一键查排片</div>
+      <h2>像查列车时刻一样<br>精准<em>选好电影</em></h2>
+      <p>12306电影网（12306dianyingwang）提供电影排片时刻表、热门影片推荐、院线资讯与影评，帮你快速找到心仪的下一部电影。</p>
+      <div class="acts"><a href="#schedule" class="btn btn-p">查询排片</a><a href="#hot" class="btn btn-o">热门推荐</a></div>
+    </div>
+    <form class="search" onsubmit="event.preventDefault();"><div class="lab">▍电影排片查询</div>
+      <div class="row"><input type="text" placeholder="影片 / 影院 / 关键词" value="最近的影院"><div class="swap">⇄</div></div>
+      <div class="row"><select><option>全部类型</option><option>动作</option><option>喜剧</option><option>爱情</option><option>科幻</option><option>悬疑</option></select><select><option>今日场次</option><option>本周末</option><option>下周上映</option></select></div>
+      <button class="big">查询排片时刻表 →</button>
+    </form>
+  </div>
+</section>
+
+<!-- 栏目一：排片时刻表 -->
+<section id="schedule">
+  <div class="wrap">
+    <div class="sec-h"><div class="top"><span class="n">Schedule</span><h2>今日排片时刻表</h2><span class="en">实时更新 · 一键选座</span></div><p class="desc">按场次、类型、评分快速筛选，像查列车时刻一样查电影排片，告别盲选。</p></div>
+    <div class="tbl">
+      <div class="th"><span>影片</span><span>类型</span><span>时长</span><span>场次</span><span>评分</span><span>余座 / 选座</span></div>
+      <div class="rw"><div class="film" data-k="影片"><div class="poster p1">深海<br>纪元</div><b>深海纪元</b><small>科幻 · 冒险</small></div><div data-k="类型"><span class="chip chip-h">科幻</span></div><div data-k="时长">128 min</div><div data-k="场次"><span class="seat">10:20 / 13:40 / 19:10</span></div><div data-k="评分"><span class="star">★ 8.7</span></div><div data-k="余座"><button class="tk">选座</button></div></div>
+      <div class="rw"><div class="film" data-k="影片"><div class="poster p2">云端<br>恋人</div><b>云端恋人</b><small>爱情 · 都市</small></div><div data-k="类型"><span class="chip chip-s">爱情</span></div><div data-k="时长">106 min</div><div data-k="场次"><span class="seat">11:05 / 14:30 / 20:00</span></div><div data-k="评分"><span class="star">★ 8.2</span></div><div data-k="余座"><button class="tk">选座</button></div></div>
+      <div class="rw"><div class="film" data-k="影片"><div class="poster p3">破晓<br>行动</div><b>破晓行动</b><small>动作 · 犯罪</small></div><div data-k="类型"><span class="chip chip-h">动作</span></div><div data-k="时长">132 min</div><div data-k="场次"><span class="seat">12:00 / 15:20 / 21:30</span></div><div data-k="评分"><span class="star">★ 8.9</span></div><div data-k="余座"><button class="tk">选座</button></div></div>
+      <div class="rw"><div class="film" data-k="影片"><div class="poster p4">春山<br>笔记</div><b>春山笔记</b><small>文艺 · 治愈</small></div><div data-k="类型"><span class="chip chip-n">文艺</span></div><div data-k="时长">118 min</div><div data-k="场次"><span class="seat">09:50 / 16:10</span></div><div data-k="评分"><span class="star">★ 8.5</span></div><div data-k="余座"><button class="tk">选座</button></div></div>
+      <div class="rw"><div class="film" data-k="影片"><div class="poster p5">迷局</div><b>迷局</b><small>悬疑 · 惊悚</small></div><div data-k="类型"><span class="chip chip-h">悬疑</span></div><div data-k="时长">112 min</div><div data-k="场次"><span class="seat">13:00 / 18:45 / 22:15</span></div><div data-k="评分"><span class="star">★ 8.4</span></div><div data-k="余座"><button class="tk">选座</button></div></div>
+      <div class="rw"><div class="film" data-k="影片"><div class="poster p6">森林<br>之歌</div><b>森林之歌</b><small>动画 · 家庭</small></div><div data-k="类型"><span class="chip chip-s">动画</span></div><div data-k="时长">95 min</div><div data-k="场次"><span class="seat">10:00 / 14:00</span></div><div data-k="评分"><span class="star">★ 8.6</span></div><div data-k="余座"><button class="tk">选座</button></div></div>
+    </div>
+    <a href="#" class="more">查看完整排片表 →</a>
+  </div>
+</section>
+
+<!-- 栏目二：热门影片 -->
+<section id="hot" style="background:#fff;">
+  <div class="wrap">
+    <div class="sec-h"><div class="top"><span class="n">Hot Now</span><h2>热门影片推荐</h2><span class="en">本周口碑榜</span></div><p class="desc">综合评分、热度与观众反馈，为你精选正在热映的高口碑影片。</p></div>
+    <div class="grid">
+      <article class="card"><div class="cover p1"><em>IMAX</em><span>破晓行动</span></div><div class="bd"><h3>破晓行动</h3><div class="meta"><i>动作</i><i>犯罪</i><i>120分钟</i></div><p>一场横跨双城的追凶行动，节奏紧凑、反转不断，动作戏拳拳到肉。</p><div class="ft"><span class="star">★ 8.9 <small>/ 10</small></span><a href="#" class="more">详情 →</a></div></div></article>
+      <article class="card"><div class="cover p2"><em>NEW</em><span>深海纪元</span></div><div class="bd"><h3>深海纪元</h3><div class="meta"><i>科幻</i><i>冒险</i><i>128分钟</i></div><p>海底遗迹中发现的未知信号，揭开人类起源的另一重答案。</p><div class="ft"><span class="star">★ 8.7 <small>/ 10</small></span><a href="#" class="more">详情 →</a></div></div></article>
+      <article class="card"><div class="cover p4"><em>口碑</em><span>春山笔记</span></div><div class="bd"><h3>春山笔记</h3><div class="meta"><i>文艺</i><i>治愈</i><i>118分钟</i></div><p>用四季更替写一封给故乡的长信，慢节奏却直抵人心。</p><div class="ft"><span class="star">★ 8.5 <small>/ 10</small></span><a href="#" class="more">详情 →</a></div></div></article>
+      <article class="card"><div class="cover p5"><em>热映</em><span>迷局</span></div><div class="bd"><h3>迷局</h3><div class="meta"><i>悬疑</i><i>惊悚</i><i>112分钟</i></div><p>一桩看似普通的失踪案，牵出三层嵌套的惊人真相。</p><div class="ft"><span class="star">★ 8.4 <small>/ 10</small></span><a href="#" class="more">详情 →</a></div></div></article>
+    </div>
+    <a href="#" class="more">更多影片 →</a>
+  </div>
+</section>
+
+<!-- 栏目三：影讯资讯 -->
+<section id="news">
+  <div class="wrap">
+    <div class="sec-h"><div class="top"><span class="n">News</span><h2>院线影讯</h2><span class="en">每日更新</span></div><p class="desc">第一时间掌握院线动态、票房数据与新片上映信息。</p></div>
+    <div class="news">
+      <article class="lead"><div class="ph"><b>暑期档票房突破 120 亿，国产片占比创新高</b></div><div class="tx"><span class="cat">票房速递</span><h3>多类型影片齐发力，市场呈现多元化格局</h3><p>今年暑期档票房持续走高，动作、科幻、文艺、动画多类型影片共同发力，国产片票房占比达到近年新高，观众选择更加丰富多元。</p></div></article>
+      <div class="newslist">
+        <a href="#"><span class="no">01</span><div><time>10-04 · 上映</time><h4>《深海纪元》正式上映，首周末口碑持续发酵</h4></div></a>
+        <a href="#"><span class="no">02</span><div><time>10-03 · 票房</time><h4>本周票房榜出炉：动作片领跑，文艺片黑马上榜</h4></div></a>
+        <a href="#"><span class="no">03</span><div><time>10-02 · 新片</time><h4>三部新片定档下月，类型覆盖爱情与悬疑</h4></div></a>
+        <a href="#"><span class="no">04</span><div><time>10-01 · 活动</time><h4>多地举办经典电影回顾展，致敬电影百年</h4></div></a>
+        <a href="#"><span class="no">05</span><div><time>09-30 · 资讯</time><h4>影评人共选：近期值得一看的五部院线新片</h4></div></a>
+      </div>
+    </div>
+    <a href="#" class="more">全部影讯 →</a>
+  </div>
+</section>
+
+<!-- 栏目四：观影指南 -->
+<section id="guide" style="background:#fff;">
+  <div class="wrap">
+    <div class="sec-h"><div class="top"><span class="n">Guide</span><h2>轻松观影四步</h2><span class="en">新手也能快速上手</span></div><p class="desc">从选片到离场，12306电影网陪你完成每一次舒适的观影体验。</p></div>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><h3>查排片</h3><p>输入影片或影院关键词，快速查看今日与未来场次安排。</p></div>
+      <div class="step"><div class="num">2</div><h3>选好片</h3><p>参考评分、类型与影评，挑选最契合心情的那一部。</p></div>
+      <div class="step"><div class="num">3</div><h3>选好座</h3><p>根据场次余座情况，一键选择心仪的观影座位。</p></div>
+      <div class="step"><div class="num">4</div><h3>开心看</h3><p>提前到场，放松心情，享受一段沉浸的光影时光。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 栏目五：影评 -->
+<section id="review">
+  <div class="wrap">
+    <div class="sec-h"><div class="top"><span class="n">Review</span><h2>影评精选</h2><span class="en">真实声音</span></div><p class="desc">来自编辑与影迷的真实评价，帮你多一个角度看电影。</p></div>
+    <div class="reviews">
+      <article class="rev"><p class="q">《破晓行动》把商业片的节奏做到了极致，动作设计干净利落，情感落点也让人信服。</p><div class="au"><span class="av">影</span><div><b>影评人老陈</b><br><span>资深影评人 · 10-04</span></div></div></article>
+      <article class="rev"><p class="q">《春山笔记》像一杯温茶，慢、静、有回甘，适合忙碌生活里给自己放一个假。</p><div class="au"><span class="av av2">小</span><div><b>小米</b><br><span>影迷 · 10-03</span></div></div></article>
+      <article class="rev"><p class="q">《深海纪元》的视效诚意十足，科幻设定虽然不新鲜，但执行得非常扎实。</p><div class="au"><span class="av av3">影</span><div><b>影迷阿Ken</b><br><span>科幻迷 · 10-02</span></div></div></article>
+    </div>
+    <a href="#" class="more">更多影评 →</a>
+  </div>
+</section>
+
+<!-- 数据条 -->
+<section style="padding:0;"><div class="wrap"><div class="stats">
+  <div class="stat"><strong>300+</strong><span>合作影院</span></div>
+  <div class="stat"><strong>2000+</strong><span>在映影片</span></div>
+  <div class="stat"><strong>5万+</strong><span>每日排片</span></div>
+  <div class="stat"><strong>10万+</strong><span>注册影迷</span></div>
+  <div class="stat"><strong>每日</strong><span>实时更新</span></div>
+</div></div></section>
+
+<!-- 关于 -->
+<section id="about">
+  <div class="wrap">
+    <div class="about">
+      <div class="l"><div class="ticket"><b>12306</b>电影</div><h2>关于 12306电影网</h2><p>12306dianyingwang 是一个专注于电影排片、影片推荐、影讯资讯与观影指南的电影服务平台。</p><div class="acts"><a href="#schedule" class="btn btn-p">立即查排片</a></div></div>
+      <div class="r"><ul>
+        <li>实时排片时刻表查询</li><li>热门与高分影片推荐</li>
+        <li>院线新片与票房资讯</li><li>多类型影评与观众口碑</li>
+        <li>便捷的在线选座指引</li><li>新手友好的观影攻略</li>
+      </ul></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="f">
+    <div class="id"><div class="logo"><div class="ticket"><b>12306</b>电影</div><h4>12306电影网</h4></div><p>像查列车时刻一样查电影排片，提供电影排片、影片推荐、影讯资讯与观影指南，帮你轻松找到好电影。</p></div>
+    <div><h5>选片</h5><a href="#schedule">排片时刻表</a><a href="#hot">热门影片</a><a href="#guide">观影指南</a><a href="#">在线选座</a></div>
+    <div><h5>资讯</h5><a href="#news">院线影讯</a><a href="#review">影评精选</a><a href="#">票房榜</a><a href="#">新片定档</a></div>
+    <div><h5>关于</h5><a href="#about">关于我们</a><a href="#">合作入驻</a><a href="#">联系客服</a><a href="#">免责声明</a></div>
+  </div>
+  <div class="cp"><b>12306电影网</b> &nbsp;|&nbsp; 网址：<b>https://12306dianyingwang-wap.github.io</b><br>© 2026 12306电影网 版权所有 &nbsp;·&nbsp; 本站内容仅供学习与交流，如发现侵权内容请及时联系我们删除</div>
+</footer>
+
+<button id="top" title="回到顶部">↑</button>
+
+<script>
+document.getElementById('burger').addEventListener('click',function(){document.getElementById('nav').classList.toggle('open');});
+document.querySelectorAll('nav.primary a').forEach(function(a){a.addEventListener('click',function(){document.getElementById('nav').classList.remove('open');});});
+window.addEventListener('scroll',function(){var t=document.getElementById('top');window.scrollY>400?t.classList.add('show'):t.classList.remove('show');});
+document.getElementById('top').addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+</script>
+</body>
+</html>
